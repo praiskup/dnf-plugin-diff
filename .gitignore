@@ -1,0 +1,17 @@
+.deps
+.dirstamp
+Makefile
+Makefile.in
+ar-lib
+aclocal.m4
+autom4te.cache
+config.log
+config.status
+configure
+depcomp
+install-sh
+missing
+py-compile
+stamp-h1
+*.log
+*~

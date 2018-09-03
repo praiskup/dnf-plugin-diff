@@ -1,0 +1,28 @@
+dnf-plugin-diff - compare package contents against local changes
+================================================================
+
+Typical use-case:
+
+$ echo '# some change' >> \
+    /usr/lib/python3.6/site-packages/dnf-plugins/diff.py
+$ dnf diff dnf-plugin-diff
+Last metadata expiration check: 0:04:12 ago on Mon 03 Sep 2018 05:12:09 PM CEST.
+--- /usr/lib/python3.6/site-packages/dnf-plugins/diff.py        2018-09-03 16:41:36.000000000 +0200
++++ /usr/lib/python3.6/site-packages/dnf-plugins/diff.py        2018-09-03 17:16:17.476547131 +0200
+@@ -96,3 +96,5 @@
+             else:
+                 self._diff_package(pkg, check_pkg,
+                                    self._list_of_changed_files(check_pkg))
++
++# some change
+
+
+How to install
+--------------
+
+$ dnf copr enable praiskup/dnf-plugin-diff
+$ dnf install dnf-plugins-diff
+
+or build from source:
+
+$ autoreconf -vfi && ./configure --prefix=/usr && sudo make install
