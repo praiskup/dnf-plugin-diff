@@ -23,7 +23,7 @@ import rpm
 import subprocess
 
 import logging
-from dnfpluginsextras import _, logger
+from dnfpluginscore import _, logger
 
 @dnf.plugin.register_command
 class DiffCommand(dnf.cli.Command):
