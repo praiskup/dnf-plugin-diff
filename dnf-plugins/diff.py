@@ -46,13 +46,11 @@ class DiffCommand(dnf.cli.Command):
         )
 
     def _resolve_local_package(self, name):
-        self.base.fill_sack()
         subj = dnf.subject.Subject(name)
         q = subj.get_best_query(self.base.sack)
-        q = q.available()
-        q = q.latest()
+        q = q.installed()
         if len(q.run()) == 0:
-            msg = _("No package %s available.") % (name)
+            msg = _("No package %s is installed.") % (name)
             raise dnf.exceptions.PackageNotFoundError(msg)
 
         return list(q)
@@ -77,6 +75,7 @@ class DiffCommand(dnf.cli.Command):
                              rpm_file_name,
                              fname])
 
+
     def _list_of_changed_files(self, package):
         proc = subprocess.Popen(
             ['/usr/libexec/dnf-diff-changed-files', package],
@@ -85,9 +84,31 @@ class DiffCommand(dnf.cli.Command):
         lines = [x.decode('ascii').rstrip() for x in proc.stdout.readlines()]
         return lines
 
+
+    def _download_packages(self, to_download):
+        pkg_list = []
+        for pkg in to_download:
+            pkg_spec = '{name}-{evr}.{arch}'.format(
+                    name=pkg.name,
+                    evr=pkg.evr,
+                    arch=pkg.arch,
+            )
+            subj = dnf.subject.Subject(pkg_spec)
+
+            q = subj.get_best_query(self.base.sack).available().latest()
+            if not list(q):
+                logger.warning(_("package {0} not available in repos, trying local cache".format(pkg_spec)))
+            else:
+                pkg_list.extend(list(q))
+
+        self.base.download_packages(pkg_list)
+
+
     def run(self):
+        self.base.fill_sack()
+
         to_download = self._resolve_local_package(self.opts.pkg)
-        self.base.download_packages(to_download)
+        self._download_packages(to_download)
 
         for pkg in to_download:
             check_pkg = '{0}.{1}'.format(pkg.name, pkg.arch)

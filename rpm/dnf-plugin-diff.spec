@@ -2,7 +2,7 @@
 
 Name:           dnf-plugin-diff
 Version:        0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Diff changes in packages
 BuildArch: noarch
 
