@@ -2,7 +2,7 @@
 
 Name:           dnf-plugin-diff
 Version:        0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Diff changes in packages
 BuildArch: noarch
 
@@ -11,7 +11,11 @@ URL:            https://github.com/praiskup/%{name}
 Source0:        https://github.com/praiskup/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  python3-devel
+
+Requires:       cpio
 Requires:       dnf
+Requires:       file
+
 Provides:       dnf-command(diff)
 
 
