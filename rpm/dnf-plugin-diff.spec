@@ -1,8 +1,8 @@
 %global __python %__python3
 
 Name:           dnf-plugin-diff
-Version:        0.0
-Release:        3%{?dist}
+Version:        1.0
+Release:        1%{?dist}
 Summary:        Diff changes in packages
 BuildArch: noarch
 
@@ -16,7 +16,7 @@ Requires:       cpio
 Requires:       dnf
 Requires:       file
 
-Provides:       dnf-command(diff)
+Provides:       dnf-command(diff) = %version
 
 
 %description
