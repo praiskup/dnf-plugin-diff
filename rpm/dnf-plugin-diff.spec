@@ -43,5 +43,5 @@ Attempt to diff packages against local changes.
 
 
 %changelog
-* Mon Sep 03 2018 Pavel Raiskup <praiskup@redhat.com>
-- no changelog in upstream git
+* Sat Dec 15 2018 Pavel Raiskup <praiskup@redhat.com> - 1.0-1
+- initial Fedora packaging
