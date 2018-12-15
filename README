@@ -1,28 +1,77 @@
-dnf-plugin-diff - compare package contents against local changes
-================================================================
+dnf-plugin-diff - show local changes in RPM packages
+====================================================
 
-Typical use-case:
+It is often very convenient to edit files installed/tracked by RPM -
+typically to hot-fix a source code on production system, or change the
+default configuration files.
 
-$ echo '# some change' >> \
-    /usr/lib/python3.6/site-packages/dnf-plugins/diff.py
-$ dnf diff dnf-plugin-diff
-Last metadata expiration check: 0:04:12 ago on Mon 03 Sep 2018 05:12:09 PM CEST.
---- /usr/lib/python3.6/site-packages/dnf-plugins/diff.py        2018-09-03 16:41:36.000000000 +0200
-+++ /usr/lib/python3.6/site-packages/dnf-plugins/diff.py        2018-09-03 17:16:17.476547131 +0200
-@@ -96,3 +96,5 @@
-             else:
-                 self._diff_package(pkg, check_pkg,
-                                    self._list_of_changed_files(check_pkg))
-+
-+# some change
+It is easy to detect what files have been changed in particular installed
+RPM package (`$ rpm -V PACKAGE` helps here), but it was a pretty laborious
+job to print the actual changes (diff).  You had to a) download the
+original RPM package, b) extract the package somewhere, c) detect what
+files have actually been changed on the system and d) manually diff the
+extracted files against the changed files installed on the system.  This
+is where the simple helper `dnf-plugin-diff` steps in.
+
+
+Options/usage
+-------------
+
+$ dnf diff PKG [FILE [FILE ...]]
+
+Diff original <PKG> contents against the locally changed files.  By
+default - `dnf diff` prints (to stdout) complete changes.  Optionally the
+output can be filtered by <FILE> arguments.
+
+
+Typical use-case
+----------------
+
+I recall I changed a configuration of my `cgit` service, so I check what
+configuration files I changed:
+
+    $ rpm -V cgit
+    S.5....T.  c /etc/cgitrc
+    S.5....T.  c /etc/httpd/conf.d/cgit.conf
+
+But to see what has actually been change, I can do:
+
+    $ dnf diff cgit /etc/httpd/conf.d/cgit.conf
+    --- /etc/httpd/conf.d/cgit.conf 2018-08-18 03:31:33.000000000 +0200
+    +++ /etc/httpd/conf.d/cgit.conf 2018-12-15 10:27:23.310626910 +0100
+    @@ -1,5 +1,5 @@
+     Alias /cgit-data /usr/share/cgit
+     ScriptAlias /cgit /var/www/cgi-bin/cgit
+    -<Directory "/usr/share/cgit">
+    +<Directory "/data/cgit">
+         Require all granted
+     </Directory>
 
 
 How to install
 --------------
 
-$ dnf copr enable praiskup/dnf-plugin-diff
-$ dnf install dnf-plugins-diff
+Temporarily, it's built only in copr:
 
-or build from source:
+  $ dnf copr enable praiskup/dnf-plugin-diff
 
-$ autoreconf -vfi && ./configure --prefix=/usr && sudo make install
+Execute:
+
+  $ dnf diff ...
+  No such command: diff. Please use /usr/bin/dnf --help
+  It could be a DNF plugin command, try: "dnf install 'dnf-command(diff)'"
+  $ sudo dnf install 'dnf-command(diff)'
+
+
+Build from source
+-----------------
+
+  $ autoreconf -vfi
+  $ ./configure --prefix=/usr
+  $ sudo make install
+
+
+Build RPM from source
+---------------------
+
+Run `make dist` and use *.tar.gz file with rpm/*.spec file.

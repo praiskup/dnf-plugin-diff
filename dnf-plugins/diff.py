@@ -1,6 +1,7 @@
-# supplies the 'diff' command.
+# supplies the dnf 'diff' command.
 #
 # Copyright (C) 2018  Red Hat, Inc.
+# Written by Pavel Raiskup <praiskup@redhat.com>.
 #
 # This copyrighted material is made available to anyone wishing to use,
 # modify, copy, or redistribute it subject to the terms and conditions of
@@ -28,8 +29,8 @@ from dnfpluginscore import _, logger
 @dnf.plugin.register_command
 class DiffCommand(dnf.cli.Command):
     aliases = ("diff",)
-    summary = "Do blah."
-    usage = "ahoj"
+    summary = "Show local changes in RPM packages."
+    usage = ""
 
     @staticmethod
     def set_argparser(parser):
