@@ -8,7 +8,7 @@ BuildArch:      noarch
 
 License:        GPLv2+
 URL:            https://github.com/praiskup/%{name}
-Source0:        https://github.com/praiskup/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/praiskup/%name/releases/download/v%version/%name-%version.tar.gz
 
 BuildRequires:  python3-devel
 
