@@ -3,8 +3,8 @@
 Name:           dnf-plugin-diff
 Version:        1.0
 Release:        1%{?dist}
-Summary:        Diff changes in packages
-BuildArch: noarch
+Summary:        show local changes in RPM packages
+BuildArch:      noarch
 
 License:        GPLv2+
 URL:            https://github.com/praiskup/%{name}
@@ -20,7 +20,8 @@ Provides:       dnf-command(diff) = %version
 
 
 %description
-Attempt to diff packages against local changes.
+Dnf plugin to diff the original package contents against the locally changed
+files.
 
 
 %prep
