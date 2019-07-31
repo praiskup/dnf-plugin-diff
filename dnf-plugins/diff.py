@@ -97,10 +97,15 @@ class DiffCommand(dnf.cli.Command):
             subj = dnf.subject.Subject(pkg_spec)
 
             q = subj.get_best_query(self.base.sack).available().latest()
-            if not list(q):
+            sources = list(q)
+            if not sources:
                 logger.warning(_("package {0} not available in repos, trying local cache".format(pkg_spec)))
-            else:
-                pkg_list.extend(list(q))
+                continue
+
+            if len(sources) > 1:
+                logger.warning(_("package %s is in multiple repositories"), pkg_spec)
+
+            pkg_list.extend(sources[:1])
 
         self.base.download_packages(pkg_list)
 
