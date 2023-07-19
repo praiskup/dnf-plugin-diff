@@ -13,7 +13,7 @@ Source0:        https://github.com/praiskup/%{name}/archive/v%{version}/%{name}-
 BuildRequires:  python3-devel
 
 Requires:       cpio
-Requires:       dnf
+Requires:       python3-dnf
 Requires:       file
 
 Provides:       dnf-command(diff) = %version
