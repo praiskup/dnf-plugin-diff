@@ -1,0 +1,31 @@
+---
+srpm_build_deps:
+  - automake
+  - git
+  - make
+
+specfile_path: rpm/dnf-plugin-diff.spec
+
+actions:
+  create-archive:
+    - bash -c 'autoreconf -vfi'
+    - bash -c ./configure
+    - bash -c 'make dist'
+    - bash -c 'ls -1t ./*.tar.gz | head -n 1'
+  get-current-version:
+    - bash -c "grep AC_INIT configure.ac | cut -d ',' -f 2 | sed 's/.*\[\(.*\)\].*/\1/'"
+
+jobs:
+  - &copr
+    job: copr_build
+    trigger: pull_request
+    targets:
+      - fedora-all-x86_64
+      - epel-all-x86_64
+      - epel-10.0-x86_64
+
+  - <<: *copr
+    trigger: commit
+    owner: "praiskup"
+    project: "dnf-plugin-diff"
+    branch: main
