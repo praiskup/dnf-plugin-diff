@@ -2,6 +2,8 @@
 srpm_build_deps:
   - automake
   - git
+  - libtool
+  - libdnf5-cli-devel
   - make
 
 specfile_path: rpm/dnf-plugin-diff.spec
